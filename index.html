@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HostClinic - Medical Care</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2>
+                <span class="lang-en">Login</span>
+                <span class="lang-ar" style="display:none;">تسجيل الدخول</span>
+            </h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-email">
+                        <span class="lang-en">Username</span>
+                        <span class="lang-ar" style="display:none;">اسم المستخدم</span>
+                    </label>
+                    <input type="text" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">
+                        <span class="lang-en">Password</span>
+                        <span class="lang-ar" style="display:none;">كلمة المرور</span>
+                    </label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <span class="lang-en">Login</span>
+                    <span class="lang-ar" style="display:none;">دخول</span>
+                </button>
+                <p class="switch-form">
+                    <span class="lang-en">Don't have an account? <a href="#" onclick="showRegisterModal()">Register here</a></span>
+                    <span class="lang-ar" style="display:none;">ليس لديك حساب؟ <a href="#" onclick="showRegisterModal()">سجل هنا</a></span>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="register-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2>
+                <span class="lang-en">Register</span>
+                <span class="lang-ar" style="display:none;">تسجيل حساب جديد</span>
+            </h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="register-name">
+                        <span class="lang-en">Full Name</span>
+                        <span class="lang-ar" style="display:none;">الاسم الكامل</span>
+                    </label>
+                    <input type="text" id="register-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-email">
+                        <span class="lang-en">Email</span>
+                        <span class="lang-ar" style="display:none;">البريد الإلكتروني</span>
+                    </label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-username">
+                        <span class="lang-en">Username</span>
+                        <span class="lang-ar" style="display:none;">اسم المستخدم</span>
+                    </label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-password">
+                        <span class="lang-en">Password</span>
+                        <span class="lang-ar" style="display:none;">كلمة المرور</span>
+                    </label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-confirm-password">
+                        <span class="lang-en">Confirm Password</span>
+                        <span class="lang-ar" style="display:none;">تأكيد كلمة المرور</span>
+                    </label>
+                    <input type="password" id="register-confirm-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="register-phone">
+                        <span class="lang-en">Phone Number</span>
+                        <span class="lang-ar" style="display:none;">رقم الهاتف</span>
+                    </label>
+                    <input type="tel" id="register-phone" required>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <span class="lang-en">Register</span>
+                    <span class="lang-ar" style="display:none;">تسجيل</span>
+                </button>
+                <p class="switch-form">
+                    <span class="lang-en">Already have an account? <a href="#" onclick="showLoginModal()">Login here</a></span>
+                    <span class="lang-ar" style="display:none;">لديك حساب بالفعل؟ <a href="#" onclick="showLoginModal()">سجل دخول هنا</a></span>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-actions">
+                <button id="login-nav-btn" class="btn-nav" onclick="showLoginModal()"><i class="fas fa-sign-in-alt"></i> <span class="lang-en">Login</span><span class="lang-ar" style="display:none;">تسجيل دخول</span></button>
+                <button id="register-nav-btn" class="btn-nav btn-register" onclick="showRegisterModal()"><i class="fas fa-user-plus"></i> <span class="lang-en">Register</span><span class="lang-ar" style="display:none;">تسجيل</span></button>
+                <button id="lang-toggle" class="btn-lang" onclick="toggleLanguage()">
+                    <span class="lang-en">AR</span>
+                    <span class="lang-ar" style="display:none;">EN</span>
+                </button>
+                <span id="user-name" class="user-name" style="display:none;"></span>
+                <button id="logout-btn" class="btn-logout" style="display:none;"><i class="fas fa-sign-out-alt"></i> <span class="lang-en">Logout</span><span class="lang-ar" style="display:none;">خروج</span></button>
+            </div>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="#" class="nav-link active" data-view="home"><i class="fas fa-home"></i> <span class="lang-en">Home</span><span class="lang-ar" style="display:none;">الرئيسية</span></a></li>
+                <li class="user-only"><a href="#" class="nav-link" data-view="booking"><i class="fas fa-calendar-plus"></i> <span class="lang-en">Book</span><span class="lang-ar" style="display:none;">حجز</span></a></li>
+                <li class="user-only"><a href="#" class="nav-link" data-view="appointments"><i class="fas fa-calendar-check"></i> <span class="lang-en">My Appointments</span><span class="lang-ar" style="display:none;">مواعيدي</span></a></li>
+                <li class="user-only"><a href="#" class="nav-link" data-view="history"><i class="fas fa-history"></i> <span class="lang-en">Medical History</span><span class="lang-ar" style="display:none;">السجل الطبي</span></a></li>
+                <li><a href="#" class="nav-link" data-view="doctors"><i class="fas fa-user-md"></i> <span class="lang-en">Doctors</span><span class="lang-ar" style="display:none;">الأطباء</span></a></li>
+                <li><a href="#" class="nav-link" data-view="about"><i class="fas fa-info-circle"></i> <span class="lang-en">About</span><span class="lang-ar" style="display:none;">عن العيادة</span></a></li>
+                <li class="admin-only" style="display:none;"><a href="#" class="nav-link" data-view="admin"><i class="fas fa-cog"></i> <span class="lang-en">Dashboard</span><span class="lang-ar" style="display:none;">لوحة التحكم</span></a></li>
+                <li class="admin-only" style="display:none;"><a href="#" class="nav-link" data-view="admin-patients"><i class="fas fa-users"></i> <span class="lang-en">Patients</span><span class="lang-ar" style="display:none;">المرضى</span></a></li>
+                <li class="admin-only" style="display:none;"><a href="#" class="nav-link" data-view="manage-doctors"><i class="fas fa-user-plus"></i> <span class="lang-en">Manage Doctors</span><span class="lang-ar" style="display:none;">إدارة الأطباء</span></a></li>
+                <li class="superadmin-only" style="display:none;"><a href="#" class="nav-link" data-view="superadmin"><i class="fas fa-crown"></i> <span class="lang-en">Super Admin</span><span class="lang-ar" style="display:none;">المدير العام</span></a></li>
+                <li class="superadmin-only" style="display:none;"><a href="#" class="nav-link" data-view="manage-users"><i class="fas fa-users-cog"></i> <span class="lang-en">Manage Users</span><span class="lang-ar" style="display:none;">إدارة المستخدمين</span></a></li>
+                <li class="doctor-only" style="display:none;"><a href="#" class="nav-link" data-view="doctor-appointments"><i class="fas fa-calendar-alt"></i> <span class="lang-en">My Schedule</span><span class="lang-ar" style="display:none;">جدولي</span></a></li>
+                <li class="doctor-only" style="display:none;"><a href="#" class="nav-link" data-view="doctor-patients"><i class="fas fa-users"></i> <span class="lang-en">My Patients</span><span class="lang-ar" style="display:none;">مرضاي</span></a></li>
+            </ul>
+            <div class="nav-brand">
+                <i class="fas fa-hospital"></i>
+                <span>HostClinic</span>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home View -->
+        <section id="home-view" class="view active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1 class="animate-fade-in">
+                        <span class="lang-en">Welcome to HostClinic</span>
+                        <span class="lang-ar" style="display:none;">مرحباً بك في HostClinic</span>
+                    </h1>
+                    <p class="animate-fade-in-delay">
+                        <span class="lang-en">Your trusted partner in health and wellness</span>
+                        <span class="lang-ar" style="display:none;">شريكك الموثوق في الصحة والعافية</span>
+                    </p>
+                    <div class="typing-container">
+                        <span class="typing-prefix">
+                            <span class="lang-en">We provide</span>
+                            <span class="lang-ar" style="display:none;">نقدم لك</span>
+                        </span>
+                        <span class="typing-text"></span>
+                    </div>
+                    <div class="hero-buttons">
+                        <button class="btn-hero" onclick="handleBookNowClick()">
+                            <i class="fas fa-calendar-plus"></i> 
+                            <span class="lang-en">Book Appointment Now</span>
+                            <span class="lang-ar" style="display:none;">احجز موعدك الآن</span>
+                        </button>
+                        <button class="btn-hero-secondary" onclick="switchView('doctors')">
+                            <i class="fas fa-user-md"></i> 
+                            <span class="lang-en">Meet Our Doctors</span>
+                            <span class="lang-ar" style="display:none;">تعرف على أطبائنا</span>
+                        </button>
+                    </div>
+                </div>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <h3 class="counter" data-target="5000">0</h3>
+                        <p>
+                            <span class="lang-en">Satisfied Patients</span>
+                            <span class="lang-ar" style="display:none;">مريض راضٍ</span>
+                        </p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-award"></i>
+                        <h3><span class="counter" data-target="5">0</span>+</h3>
+                        <p>
+                            <span class="lang-en">Years Experience</span>
+                            <span class="lang-ar" style="display:none;">سنوات خبرة</span>
+                        </p>
+                    </div>
+                    <div class="stat-item">
+                        <i class="fas fa-hospital"></i>
+                        <h3 class="counter" data-target="9">0</h3>
+                        <p>
+                            <span class="lang-en">Departments</span>
+                            <span class="lang-ar" style="display:none;">أقسام طبية</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <!-- Why Choose Us Section -->
+                <div class="why-choose-us">
+                    <h2 class="section-title-home">
+                        <span class="lang-en">Why Choose HostClinic?</span>
+                        <span class="lang-ar" style="display:none;">لماذا تختار HostClinic؟</span>
+                    </h2>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3>
+                                <span class="lang-en">24/7 Emergency</span>
+                                <span class="lang-ar" style="display:none;">طوارئ 24/7</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Round-the-clock emergency services for your peace of mind</span>
+                                <span class="lang-ar" style="display:none;">خدمات طوارئ على مدار الساعة لراحة بالك</span>
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-user-md"></i>
+                            </div>
+                            <h3>
+                                <span class="lang-en">Expert Doctors</span>
+                                <span class="lang-ar" style="display:none;">أطباء خبراء</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Highly qualified and experienced medical professionals</span>
+                                <span class="lang-ar" style="display:none;">أطباء مؤهلون وذوو خبرة عالية</span>
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-microscope"></i>
+                            </div>
+                            <h3>
+                                <span class="lang-en">Modern Equipment</span>
+                                <span class="lang-ar" style="display:none;">أجهزة حديثة</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">State-of-the-art medical technology and facilities</span>
+                                <span class="lang-ar" style="display:none;">أحدث التقنيات والمعدات الطبية</span>
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-hand-holding-medical"></i>
+                            </div>
+                            <h3>
+                                <span class="lang-en">Personalized Care</span>
+                                <span class="lang-ar" style="display:none;">رعاية شخصية</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Tailored treatment plans for every patient</span>
+                                <span class="lang-ar" style="display:none;">خطط علاجية مخصصة لكل مريض</span>
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h3>
+                                <span class="lang-en">Affordable Prices</span>
+                                <span class="lang-ar" style="display:none;">أسعار مناسبة</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Quality healthcare at competitive rates</span>
+                                <span class="lang-ar" style="display:none;">رعاية صحية عالية الجودة بأسعار تنافسية</span>
+                            </p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-mobile-alt"></i>
+                            </div>
+                            <h3>
+                                <span class="lang-en">Easy Booking</span>
+                                <span class="lang-ar" style="display:none;">حجز سهل</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Book appointments online anytime, anywhere</span>
+                                <span class="lang-ar" style="display:none;">احجز مواعيدك أونلاين في أي وقت ومن أي مكان</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="services-section">
+                    <h2 class="section-title-home">
+                        <span class="lang-en">Our Medical Services</span>
+                        <span class="lang-ar" style="display:none;">خدماتنا الطبية</span>
+                    </h2>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <i class="fas fa-heartbeat"></i>
+                            <h3>
+                                <span class="lang-en">Cardiology</span>
+                                <span class="lang-ar" style="display:none;">القلب</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Expert heart care and cardiovascular treatment</span>
+                                <span class="lang-ar" style="display:none;">رعاية متخصصة للقلب والأوعية الدموية</span>
+                            </p>
+                            <a href="#" onclick="switchView('doctors')" class="service-link">
+                                <span class="lang-en">Learn More →</span>
+                                <span class="lang-ar" style="display:none;">اعرف المزيد ←</span>
+                            </a>
+                        </div>
+                        <div class="service-card">
+                            <i class="fas fa-baby"></i>
+                            <h3>
+                                <span class="lang-en">Pediatrics</span>
+                                <span class="lang-ar" style="display:none;">الأطفال</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Comprehensive care for children of all ages</span>
+                                <span class="lang-ar" style="display:none;">رعاية شاملة للأطفال من جميع الأعمار</span>
+                            </p>
+                            <a href="#" onclick="switchView('doctors')" class="service-link">
+                                <span class="lang-en">Learn More →</span>
+                                <span class="lang-ar" style="display:none;">اعرف المزيد ←</span>
+                            </a>
+                        </div>
+                        <div class="service-card">
+                            <i class="fas fa-bone"></i>
+                            <h3>
+                                <span class="lang-en">Orthopedics</span>
+                                <span class="lang-ar" style="display:none;">العظام</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Advanced bone and joint treatment</span>
+                                <span class="lang-ar" style="display:none;">علاج متقدم للعظام والمفاصل</span>
+                            </p>
+                            <a href="#" onclick="switchView('doctors')" class="service-link">
+                                <span class="lang-en">Learn More →</span>
+                                <span class="lang-ar" style="display:none;">اعرف المزيد ←</span>
+                            </a>
+                        </div>
+                        <div class="service-card">
+                            <i class="fas fa-brain"></i>
+                            <h3>
+                                <span class="lang-en">Neurology</span>
+                                <span class="lang-ar" style="display:none;">الأعصاب</span>
+                            </h3>
+                            <p>
+                                <span class="lang-en">Specialized neurological care</span>
+                                <span class="lang-ar" style="display:none;">رعاية متخصصة للجهاز العصبي</span>
+                            </p>
+                            <a href="#" onclick="switchView('doctors')" class="service-link">
+                                <span class="lang-en">Learn More →</span>
+                                <span class="lang-ar" style="display:none;">اعرف المزيد ←</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonials Section -->
+                <div class="testimonials-section">
+                    <h2 class="section-title-home"><span class="lang-en">What Our Patients Say</span><span class="lang-ar" style="display:none;">آراء مرضانا</span></h2>
+                    <div class="testimonials-grid">
+                        <div class="testimonial-card">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonial-text">"خدمة ممتازة وطاقم طبي محترف جداً. الدكاترة بيهتموا بالمريض وعندهم خبرة كبيرة. أنصح بالعيادة بشدة!"</p>
+                            <div class="testimonial-author">
+                                <div class="testimonial-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4>سارة أحمد</h4>
+                                    <p>مريضة</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonial-text">"أفضل عيادة في المنطقة! نظافة ممتازة، أجهزة حديثة، والموظفين دايماً متعاونين ومحترمين."</p>
+                            <div class="testimonial-author">
+                                <div class="testimonial-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4>محمد حسن</h4>
+                                    <p>مريض</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="testimonial-card">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonial-text">"بتابع في العيادة من سنين. الدكاترة بياخدوا وقتهم في الكشف والعلاج ممتاز. شكراً ليكم!"</p>
+                            <div class="testimonial-author">
+                                <div class="testimonial-icon">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div>
+                                    <h4>فاطمة علي</h4>
+                                    <p>مريضة</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CTA Section -->
+                <div class="cta-section">
+                    <div class="cta-content">
+                        <h2>
+                            <span class="lang-en">Ready to Get Started?</span>
+                            <span class="lang-ar" style="display:none;">هل أنت مستعد للبدء؟</span>
+                        </h2>
+                        <p>
+                            <span class="lang-en">Book your appointment today and experience quality healthcare</span>
+                            <span class="lang-ar" style="display:none;">احجز موعدك اليوم واستمتع برعاية صحية عالية الجودة</span>
+                        </p>
+                        <button class="btn-cta" onclick="handleBookNowClick()">
+                            <i class="fas fa-calendar-check"></i> 
+                            <span class="lang-en">Book Now</span>
+                            <span class="lang-ar" style="display:none;">احجز الآن</span>
+                        </button>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Booking View -->
+        <section id="booking-view" class="view">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="lang-en">Book an Appointment</span>
+                    <span class="lang-ar" style="display:none;">احجز موعد</span>
+                </h2>
+                <div class="form-container">
+                    <form id="booking-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patient-name">
+                                    <i class="fas fa-user"></i> 
+                                    <span class="lang-en">Patient Name</span>
+                                    <span class="lang-ar" style="display:none;">اسم المريض</span>
+                                </label>
+                                <input type="text" id="patient-name" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="patient-email">
+                                    <i class="fas fa-envelope"></i> 
+                                    <span class="lang-en">Email</span>
+                                    <span class="lang-ar" style="display:none;">البريد الإلكتروني</span>
+                                </label>
+                                <input type="email" id="patient-email" readonly>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="patient-phone">
+                                    <i class="fas fa-phone"></i> 
+                                    <span class="lang-en">Phone</span>
+                                    <span class="lang-ar" style="display:none;">رقم الهاتف</span>
+                                </label>
+                                <input type="tel" id="patient-phone" required readonly>
+                            </div>
+                            <div class="form-group">
+                                <label for="department">
+                                    <i class="fas fa-hospital-alt"></i> 
+                                    <span class="lang-en">Department</span>
+                                    <span class="lang-ar" style="display:none;">القسم</span>
+                                </label>
+                                <select id="department" required>
+                                    <option value="">
+                                        <span class="lang-en">Select Department</span>
+                                        <span class="lang-ar" style="display:none;">اختر القسم</span>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctor">
+                                    <i class="fas fa-user-md"></i> 
+                                    <span class="lang-en">Doctor</span>
+                                    <span class="lang-ar" style="display:none;">الطبيب</span>
+                                </label>
+                                <select id="doctor" required disabled>
+                                    <option value="">
+                                        <span class="lang-en">Select Doctor</span>
+                                        <span class="lang-ar" style="display:none;">اختر الطبيب</span>
+                                    </option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="appointment-date">
+                                    <i class="fas fa-calendar"></i> 
+                                    <span class="lang-en">Date</span>
+                                    <span class="lang-ar" style="display:none;">التاريخ</span>
+                                </label>
+                                <input type="date" id="appointment-date" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="appointment-time">
+                                    <i class="fas fa-clock"></i> 
+                                    <span class="lang-en">Time</span>
+                                    <span class="lang-ar" style="display:none;">الوقت</span>
+                                </label>
+                                <select id="appointment-time" required disabled>
+                                    <option value="">
+                                        <span class="lang-en">Select Time</span>
+                                        <span class="lang-ar" style="display:none;">اختر الوقت</span>
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="reason">
+                                <i class="fas fa-notes-medical"></i> 
+                                <span class="lang-en">Reason for Visit</span>
+                                <span class="lang-ar" style="display:none;">سبب الزيارة</span>
+                            </label>
+                            <textarea id="reason" rows="4" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-check"></i> 
+                            <span class="lang-en">Book Appointment</span>
+                            <span class="lang-ar" style="display:none;">احجز الموعد</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Appointments View -->
+        <section id="appointments-view" class="view">
+            <div class="container">
+                <h2 class="section-title">My Appointments</h2>
+                <div class="search-box">
+                    <input type="email" id="search-email" placeholder="Enter your email to view appointments">
+                    <button id="search-btn" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+                </div>
+                <div id="appointments-list"></div>
+            </div>
+        </section>
+
+        <!-- Patient History View -->
+        <section id="history-view" class="view">
+            <div class="container">
+                <h2 class="section-title">Patient Medical History</h2>
+                <div class="search-box">
+                    <input type="email" id="history-email" placeholder="Enter your email to view medical history">
+                    <button id="history-btn" class="btn-primary"><i class="fas fa-search"></i> Search</button>
+                </div>
+                <div id="history-stats" style="display:none;">
+                    <div class="history-summary">
+                        <div class="summary-card">
+                            <i class="fas fa-calendar-check"></i>
+                            <h3 id="total-visits">0</h3>
+                            <p>Total Visits</p>
+                        </div>
+                        <div class="summary-card">
+                            <i class="fas fa-clock"></i>
+                            <h3 id="upcoming-visits">0</h3>
+                            <p>Upcoming</p>
+                        </div>
+                        <div class="summary-card">
+                            <i class="fas fa-check-circle"></i>
+                            <h3 id="completed-visits">0</h3>
+                            <p>Completed</p>
+                        </div>
+                        <div class="summary-card">
+                            <i class="fas fa-times-circle"></i>
+                            <h3 id="cancelled-visits">0</h3>
+                            <p>Cancelled</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="history-list"></div>
+            </div>
+        </section>
+
+        <!-- Doctors View -->
+        <section id="doctors-view" class="view">
+            <div class="container">
+                <h2 class="section-title">Our Doctors</h2>
+                <div id="doctors-list" class="doctors-grid"></div>
+            </div>
+        </section>
+
+        <!-- About View -->
+        <section id="about-view" class="view">
+            <div class="container">
+                <div class="about-section">
+                    <div class="about-header">
+                        <img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?w=1200&h=400&fit=crop" alt="Clinic Building" class="about-image">
+                        <div class="about-overlay">
+                            <h2>About HostClinic</h2>
+                            <p>Excellence in Healthcare Since 2010</p>
+                        </div>
+                    </div>
+                    
+                    <div class="clinic-gallery">
+                        <h3>Our Medical Excellence</h3>
+                        <p class="gallery-intro">At HostClinic, we combine cutting-edge medical technology with compassionate care to deliver exceptional healthcare services. Our state-of-the-art facilities and experienced medical professionals ensure that every patient receives the highest standard of treatment.</p>
+                        <div class="gallery-grid">
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=600&h=400&fit=crop" alt="Doctor">
+                                <p>Board-Certified Specialists</p>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=600&h=400&fit=crop" alt="Medical Team">
+                                <p>Dedicated Medical Team</p>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=600&h=400&fit=crop" alt="Healthcare">
+                                <p>Comprehensive Healthcare</p>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=400&fit=crop" alt="Consultation">
+                                <p>Personalized Consultations</p>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1638202993928-7267aad84c31?w=600&h=400&fit=crop" alt="Medical Care">
+                                <p>Patient-Centered Care</p>
+                            </div>
+                            <div class="gallery-item">
+                                <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=600&h=400&fit=crop" alt="Specialist">
+                                <p>Advanced Medical Solutions</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="about-content">
+                        <div class="about-text">
+                            <h3>Our Story</h3>
+                            <p>Founded in 2010, HostClinic has been at the forefront of providing exceptional medical care to our community. What started as a small family practice has grown into a comprehensive healthcare facility, serving thousands of patients annually. Our journey has been driven by a simple yet powerful vision: to make quality healthcare accessible, affordable, and compassionate.</p>
+                            
+                            <h3>Our Mission</h3>
+                            <p>At HostClinic, we are committed to providing exceptional medical care with compassion and expertise. Our mission is to improve the health and well-being of every individual who walks through our doors. We believe that healthcare is not just about treating illnesses, but about building lasting relationships with our patients and their families.</p>
+                            
+                            <h3>Our Values</h3>
+                            <ul class="values-list">
+                                <li><i class="fas fa-heart"></i> <strong>Compassion:</strong> We treat every patient with empathy, respect, and dignity</li>
+                                <li><i class="fas fa-shield-alt"></i> <strong>Excellence:</strong> We maintain the highest standards in medical care and service</li>
+                                <li><i class="fas fa-users"></i> <strong>Integrity:</strong> We operate with honesty, transparency, and ethical practices</li>
+                                <li><i class="fas fa-lightbulb"></i> <strong>Innovation:</strong> We embrace new technologies and medical advancements</li>
+                                <li><i class="fas fa-hands-helping"></i> <strong>Collaboration:</strong> We work together as a team to achieve the best outcomes</li>
+                            </ul>
+                            
+                            <h3>Why Choose HostClinic?</h3>
+                            <ul class="features-list">
+                                <li><i class="fas fa-check-circle"></i> 24/7 Emergency Services with rapid response team</li>
+                                <li><i class="fas fa-check-circle"></i> Board-certified physicians with years of experience</li>
+                                <li><i class="fas fa-check-circle"></i> State-of-the-art diagnostic and treatment equipment</li>
+                                <li><i class="fas fa-check-circle"></i> Comprehensive health services under one roof</li>
+                                <li><i class="fas fa-check-circle"></i> Patient-centered approach with personalized care plans</li>
+                                <li><i class="fas fa-check-circle"></i> Affordable healthcare with flexible payment options</li>
+                                <li><i class="fas fa-check-circle"></i> Clean, modern facilities with a welcoming atmosphere</li>
+                                <li><i class="fas fa-check-circle"></i> Multilingual staff to serve diverse communities</li>
+                            </ul>
+                            
+                            <h3>Our Commitment to You</h3>
+                            <p>We understand that visiting a healthcare facility can be stressful. That's why we've created an environment that prioritizes your comfort and peace of mind. From the moment you schedule your appointment to your follow-up care, our dedicated team is here to support you every step of the way. We take the time to listen to your concerns, answer your questions, and develop treatment plans that align with your health goals and lifestyle.</p>
+                        </div>
+                        
+                        <div class="clinic-info">
+                            <div class="info-card">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <h4>Visit Us</h4>
+                                <p>123 Medical Center Drive<br>Cairo, Egypt<br>Postal Code: 12345</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-phone-alt"></i>
+                                <h4>Call Us</h4>
+                                <p>Main: 01285088084<br>Emergency: 01285088085<br>Appointments: 01285088086</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-clock"></i>
+                                <h4>Working Hours</h4>
+                                <p>Monday - Friday: 8:00 AM - 8:00 PM<br>Saturday - Sunday: 9:00 AM - 5:00 PM<br>Emergency: 24/7</p>
+                            </div>
+                            <div class="info-card">
+                                <i class="fas fa-envelope"></i>
+                                <h4>Email Us</h4>
+                                <p>General: info@hostclinic.com<br>Appointments: appointments@hostclinic.com<br>Support: raniaraaef00@gmail.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="accreditation-section">
+                            <h3>Accreditations & Certifications</h3>
+                            <p>HostClinic is proud to be accredited by leading healthcare organizations and maintains the highest standards of medical excellence. Our facility meets all national and international healthcare quality standards.</p>
+                            <div class="accreditation-badges">
+                                <div class="badge-item">
+                                    <i class="fas fa-certificate"></i>
+                                    <p>ISO 9001 Certified</p>
+                                </div>
+                                <div class="badge-item">
+                                    <i class="fas fa-award"></i>
+                                    <p>Healthcare Excellence Award 2023</p>
+                                </div>
+                                <div class="badge-item">
+                                    <i class="fas fa-star"></i>
+                                    <p>5-Star Patient Rating</p>
+                                </div>
+                                <div class="badge-item">
+                                    <i class="fas fa-shield-alt"></i>
+                                    <p>Patient Safety Certified</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin View -->
+        <section id="admin-view" class="view">
+            <div class="container">
+                <h2 class="section-title">Admin Dashboard</h2>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3 id="total-appointments">0</h3>
+                        <p>Total Appointments</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3 id="pending-appointments">0</h3>
+                        <p>Confirmed</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-times-circle"></i>
+                        <h3 id="cancelled-appointments">0</h3>
+                        <p>Cancelled</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-md"></i>
+                        <h3 id="total-doctors">8</h3>
+                        <p>Doctors</p>
+                    </div>
+                </div>
+                
+                <div class="admin-section">
+                    <h3>All Appointments</h3>
+                    <div id="admin-appointments-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Admin Patients View -->
+        <section id="admin-patients-view" class="view">
+            <div class="container">
+                <h2 class="section-title">All Patients</h2>
+                <div id="patients-list"></div>
+            </div>
+        </section>
+
+        <!-- Manage Doctors View -->
+        <section id="manage-doctors-view" class="view">
+            <div class="container">
+                <h2 class="section-title">Manage Doctors</h2>
+                
+                <div class="add-doctor-section">
+                    <h3>Add New Doctor</h3>
+                    <form id="add-doctor-form" class="form-container">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctor-name-ar"><i class="fas fa-user-md"></i> Name (Arabic)</label>
+                                <input type="text" id="doctor-name-ar" required placeholder="د. أحمد محمد">
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-name-en"><i class="fas fa-user-md"></i> Name (English)</label>
+                                <input type="text" id="doctor-name-en" required placeholder="Dr. Ahmed Mohamed">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctor-dept"><i class="fas fa-hospital-alt"></i> Department</label>
+                                <select id="doctor-dept" required>
+                                    <option value="">Select Department</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-spec-ar"><i class="fas fa-stethoscope"></i> Specialization (Arabic)</label>
+                                <input type="text" id="doctor-spec-ar" required placeholder="طبيب عام">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctor-spec-en"><i class="fas fa-stethoscope"></i> Specialization (English)</label>
+                                <input type="text" id="doctor-spec-en" required placeholder="General Physician">
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-exp"><i class="fas fa-calendar"></i> Experience</label>
+                                <input type="text" id="doctor-exp" required placeholder="10 years">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctor-edu-ar"><i class="fas fa-graduation-cap"></i> Education (Arabic)</label>
+                                <input type="text" id="doctor-edu-ar" required placeholder="دكتوراه في الطب، جامعة القاهرة">
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-edu-en"><i class="fas fa-graduation-cap"></i> Education (English)</label>
+                                <input type="text" id="doctor-edu-en" required placeholder="MD, Cairo University">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="doctor-schedule"><i class="fas fa-clock"></i> Schedule</label>
+                                <input type="text" id="doctor-schedule" required placeholder="Mon-Fri: 9:00 AM - 5:00 PM">
+                            </div>
+                            <div class="form-group">
+                                <label for="doctor-photo"><i class="fas fa-image"></i> Doctor Photo</label>
+                                <input type="file" id="doctor-photo" accept="image/*" required>
+                                <div id="photo-preview" class="photo-preview"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar-check"></i> Available Days</label>
+                            <div class="days-selector">
+                                <label class="day-checkbox"><input type="checkbox" value="1"> Monday</label>
+                                <label class="day-checkbox"><input type="checkbox" value="2"> Tuesday</label>
+                                <label class="day-checkbox"><input type="checkbox" value="3"> Wednesday</label>
+                                <label class="day-checkbox"><input type="checkbox" value="4"> Thursday</label>
+                                <label class="day-checkbox"><input type="checkbox" value="5"> Friday</label>
+                                <label class="day-checkbox"><input type="checkbox" value="6"> Saturday</label>
+                                <label class="day-checkbox"><input type="checkbox" value="0"> Sunday</label>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add Doctor</button>
+                    </form>
+                </div>
+                
+                <div class="doctors-list-section">
+                    <h3>Current Doctors</h3>
+                    <div id="manage-doctors-list"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Doctor Appointments View -->
+        <section id="doctor-appointments-view" class="view">
+            <div class="container">
+                <h2 class="section-title">My Schedule</h2>
+                <div class="doctor-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3 id="doctor-total-appointments">0</h3>
+                        <p>Total Appointments</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-clock"></i>
+                        <h3 id="doctor-today-appointments">0</h3>
+                        <p>Today's Appointments</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <h3 id="doctor-upcoming-appointments">0</h3>
+                        <p>Upcoming</p>
+                    </div>
+                </div>
+                <div id="doctor-appointments-list"></div>
+            </div>
+        </section>
+
+        <!-- Doctor Patients View -->
+        <section id="doctor-patients-view" class="view">
+            <div class="container">
+                <h2 class="section-title">My Patients</h2>
+                <div id="doctor-patients-list"></div>
+            </div>
+        </section>
+
+        <!-- SuperAdmin View -->
+        <section id="superadmin-view" class="view">
+            <div class="container">
+                <h2 class="section-title"><i class="fas fa-crown"></i> Super Admin Dashboard</h2>
+                <div class="admin-stats">
+                    <div class="stat-card">
+                        <i class="fas fa-users"></i>
+                        <h3 id="total-users">0</h3>
+                        <p>Total Users</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-shield"></i>
+                        <h3 id="total-admins">0</h3>
+                        <p>Admins</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-user-md"></i>
+                        <h3 id="superadmin-total-doctors">0</h3>
+                        <p>Doctors</p>
+                    </div>
+                    <div class="stat-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3 id="superadmin-total-appointments">0</h3>
+                        <p>Total Appointments</p>
+                    </div>
+                </div>
+                
+                <div class="admin-section">
+                    <h3>System Overview</h3>
+                    <div class="system-info">
+                        <div class="info-card">
+                            <i class="fas fa-database"></i>
+                            <h4>Database Status</h4>
+                            <p class="status-badge success">Active</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-server"></i>
+                            <h4>System Status</h4>
+                            <p class="status-badge success">Running</p>
+                        </div>
+                        <div class="info-card">
+                            <i class="fas fa-chart-line"></i>
+                            <h4>Performance</h4>
+                            <p class="status-badge success">Optimal</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Manage Users View -->
+        <section id="manage-users-view" class="view">
+            <div class="container">
+                <h2 class="section-title">Manage Users</h2>
+                
+                <div class="add-user-section">
+                    <h3>Add New User</h3>
+                    <form id="add-user-form" class="form-container">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="user-username"><i class="fas fa-user"></i> Username</label>
+                                <input type="text" id="user-username" required placeholder="username">
+                            </div>
+                            <div class="form-group">
+                                <label for="user-password"><i class="fas fa-lock"></i> Password</label>
+                                <input type="password" id="user-password" required placeholder="password">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="user-name"><i class="fas fa-id-card"></i> Full Name</label>
+                                <input type="text" id="user-name" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="user-email"><i class="fas fa-envelope"></i> Email</label>
+                                <input type="email" id="user-email" required placeholder="user@example.com">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="user-role"><i class="fas fa-user-tag"></i> Role</label>
+                            <select id="user-role" required>
+                                <option value="">Select Role</option>
+                                <option value="user">User</option>
+                                <option value="admin">Admin</option>
+                                <option value="doctor">Doctor</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary"><i class="fas fa-plus"></i> Add User</button>
+                    </form>
+                </div>
+                
+                <div class="users-list-section">
+                    <h3>Current Users</h3>
+                    <div id="users-list"></div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4><i class="fas fa-hospital"></i> HostClinic</h4>
+                    <p>
+                        <span class="lang-en">Your trusted partner in health and wellness. Providing quality healthcare services with compassion and excellence since 2010.</span>
+                        <span class="lang-ar" style="display:none;">شريكك الموثوق في الصحة والعافية. نقدم خدمات رعاية صحية عالية الجودة بعناية وتميز منذ 2010.</span>
+                    </p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>
+                        <span class="lang-en">Quick Links</span>
+                        <span class="lang-ar" style="display:none;">روابط سريعة</span>
+                    </h4>
+                    <ul>
+                        <li><a href="#" onclick="switchView('home')"><i class="fas fa-angle-right"></i> <span class="lang-en">Home</span><span class="lang-ar" style="display:none;">الرئيسية</span></a></li>
+                        <li><a href="#" onclick="switchView('doctors')"><i class="fas fa-angle-right"></i> <span class="lang-en">Our Doctors</span><span class="lang-ar" style="display:none;">أطباؤنا</span></a></li>
+                        <li><a href="#" onclick="switchView('about')"><i class="fas fa-angle-right"></i> <span class="lang-en">About Us</span><span class="lang-ar" style="display:none;">عن العيادة</span></a></li>
+                        <li><a href="#" onclick="handleBookNowClick()"><i class="fas fa-angle-right"></i> <span class="lang-en">Book Appointment</span><span class="lang-ar" style="display:none;">احجز موعد</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>
+                        <span class="lang-en">Our Services</span>
+                        <span class="lang-ar" style="display:none;">خدماتنا</span>
+                    </h4>
+                    <ul>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> <span class="lang-en">General Medicine</span><span class="lang-ar" style="display:none;">الطب العام</span></a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> <span class="lang-en">Cardiology</span><span class="lang-ar" style="display:none;">القلب</span></a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> <span class="lang-en">Pediatrics</span><span class="lang-ar" style="display:none;">الأطفال</span></a></li>
+                        <li><a href="#"><i class="fas fa-angle-right"></i> <span class="lang-en">Orthopedics</span><span class="lang-ar" style="display:none;">العظام</span></a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>
+                        <span class="lang-en">Contact Info</span>
+                        <span class="lang-ar" style="display:none;">معلومات التواصل</span>
+                    </h4>
+                    <ul class="contact-info">
+                        <li><i class="fas fa-map-marker-alt"></i> <span class="lang-en">Cairo, Egypt</span><span class="lang-ar" style="display:none;">القاهرة، مصر</span></li>
+                        <li><i class="fas fa-phone"></i> 01285088084</li>
+                        <li><i class="fas fa-envelope"></i> raniaraaef00@gmail.com</li>
+                        <li><i class="fas fa-clock"></i> <span class="lang-en">Sun-Thu: 8AM - 8PM</span><span class="lang-ar" style="display:none;">الأحد-الخميس: 8 صباحاً - 8 مساءً</span></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>
+                    <span class="lang-en">&copy; 2026 HostClinic. All rights reserved. | Designed with <i class="fas fa-heart"></i> for better healthcare</span>
+                    <span class="lang-ar" style="display:none;">&copy; 2026 HostClinic. جميع الحقوق محفوظة. | صُمم لرعاية صحية أفضل</span>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <div id="notification" class="notification"></div>
+    
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
